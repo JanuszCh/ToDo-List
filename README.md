@@ -5,7 +5,7 @@ ToDo list is a simple web application to save Your daily tasks in order not to m
 ### Features
 * Pick a date from callendar
 * Add new task
-* Mark task as complete / uncomplete
+* Mark task as completed / uncompleted
 * Set task priority
 * Edit task
 * Delete task
