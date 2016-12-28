@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+    <meta name="description" content="ToDo list. Save your daily tasks in order not to miss anything.">
+    <meta name="keywords" content="to do, todo, list">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/fontello.css">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+</head>
+
+<body>
+    <div id="app" class="app">
+        <h1 class="logo">ToDo List</h1>
+        <div id="datepicker" class="datepicker"></div>
+        <div class="container">
+            <div class="newTask">
+                <button id="addTaskButn" class="button icon-list-add" title="Add task"></button>
+                <textarea id="taskInput" class="inputTask" placeholder="Place your task here" required></textarea>
+                <select id="priority" class="priority" title="Select priority">
+                    <option value="1">High</option>
+                    <option value="2" selected>Normal</option>
+                    <option value="3">Low</option>
+                </select>
+            </div>
+            <ul id="taskList" class="taskList"></ul>
+            <button id="removeCompletedBtn" class="removeCompletedBtn button icon-trash" title="Remove completed tasks" disabled></button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modalContent">
+            <div class="modalHeader">
+                <span id="closeModal" class="closeModal">&times;</span>
+                <h2>ToDo List</h2>
+            </div>
+            <div class="modalBody">
+                <p id="modalText">Some text in the Modal Body</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCnu2-f1td-sKwZi4WZZ4pMgDBJefe4oSo",
+            authDomain: "todo-list-25f2b.firebaseapp.com",
+            databaseURL: "https://todo-list-25f2b.firebaseio.com",
+            storageBucket: "todo-list-25f2b.appspot.com",
+            messagingSenderId: "867732398760"
+        };
+        firebase.initializeApp(config);
+    </script>
+</body>
+
+</html>
