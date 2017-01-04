@@ -2,10 +2,11 @@ $(function() {
 
     var app = $('#app');
     var input = app.find('#taskInput');
-    var addBtn = app.find('#addTaskButn');
+    var addBtn = app.find('#addTaskBtn');
     var priority = app.find('#priority');
     var taskList = app.find('#taskList');
     var removeCompleteBtn = app.find('#removeCompletedBtn');
+    var removeAllBtn = app.find('#removeAllTasksBtn');
     var modal = $('#modal');
     var closeModal = modal.find('#closeModal');
     var modalText = modal.find('#modalText');
@@ -15,10 +16,11 @@ $(function() {
     callendar.datepicker({
         firstDay: 1
     });
-    var dd = callendar.datepicker('getDate').toLocaleDateString().replace(/\./g, '-');
+
+    var selectedDay = callendar.datepicker('getDate').toLocaleDateString().replace(/\./g, '-');
 
     callendar.on('change', function() {
-        dd = callendar.datepicker('getDate').toLocaleDateString().replace(/\./g, '-');
+        selectedDay = callendar.datepicker('getDate').toLocaleDateString().replace(/\./g, '-');
         renderTasks(singleDayTask);
     });
 
@@ -28,12 +30,11 @@ $(function() {
         $(this).css('height', height);
     });
 
-    addBtn.on('click', function() { //funkcja osobno jak dla kazdego buttona
-
-        input.css('height', '27px');
-
+    addBtn.on('click', function() {
         var inputValue = input.val();
         var idVal = Date.now();
+
+        input.css('height', '27px');
 
         if ($.trim(inputValue).length <= 2) {
             modalText.text('The text of the task is too short');
@@ -46,17 +47,17 @@ $(function() {
             return;
         }
 
-        if (singleDayTask[dd] !== undefined) {
-            singleDayTask[dd].push({
+        if (singleDayTask[selectedDay] !== undefined) {
+            singleDayTask[selectedDay].push({
                 taskText: inputValue,
                 complete: false,
                 id: idVal,
                 priority: priority.val()
             });
         } else {
-            singleDayTask[dd] = {};
-            singleDayTask[dd] = [];
-            singleDayTask[dd].push({
+            singleDayTask[selectedDay] = {};
+            singleDayTask[selectedDay] = [];
+            singleDayTask[selectedDay].push({
                 taskText: inputValue,
                 complete: false,
                 id: idVal,
@@ -65,6 +66,7 @@ $(function() {
         }
 
         input.val('');
+        priority.val('2');
 
         saveTasks();
         renderTasks(singleDayTask);
@@ -85,20 +87,23 @@ $(function() {
     }
 
     function renderTasks(singleDayTask) {
-        taskList.html('');
         var resultHtml = '';
+
+        taskList.html('');
 
         function compare(a, b) {
             return a.priority - b.priority;
         }
 
-        if (singleDayTask[dd] !== undefined && singleDayTask[dd].length > 0) {
-            singleDayTask[dd].sort(compare);
-            for (var i = 0; i < singleDayTask[dd].length; i++) {
-                resultHtml += '<li class="taskLine"><button type="button" class="deleteBtn button icon-trash" title="Delete task"></button><button type="button" class="completeBtn button icon-check-empty" title="Mark as completed task"></button><div  class="task taskText" data-complete="' + singleDayTask[dd][i].complete + '" data-id="' + singleDayTask[dd][i].id + '" data-priority="' + singleDayTask[dd][i].priority + '" contentEditable="false">' + singleDayTask[dd][i].taskText + '</div><button class="editBtn button icon-edit-alt" type="button" title="Edit task"></button><select class="priority" title="Select priority" disabled><option value="1">High</option><option value="2">Normal</option><option value="3">Low</option></select></li>';
+        if (singleDayTask[selectedDay] !== undefined && singleDayTask[selectedDay].length > 0) {
+            singleDayTask[selectedDay].sort(compare);
+            for (var i = 0; i < singleDayTask[selectedDay].length; i++) {
+                resultHtml += '<li class="taskLine"><button type="button" class="deleteBtn button icon-trash" title="Delete task"></button><button type="button" class="completeBtn button icon-check-empty" title="Mark as completed task"></button><div  class="task taskText" data-complete="' + singleDayTask[selectedDay][i].complete + '" data-id="' + singleDayTask[selectedDay][i].id + '" data-priority="' + singleDayTask[selectedDay][i].priority + '" contentEditable="false">' + singleDayTask[selectedDay][i].taskText + '</div><button class="editBtn button icon-edit-alt" type="button" title="Edit task"></button><select class="priority" title="Select priority" disabled><option value="1">High</option><option value="2">Normal</option><option value="3">Low</option></select></li>';
+                removeAllBtn.removeAttr('disabled').addClass('active');
             }
         } else {
             resultHtml += '<li class="taskLine"><span class="task taskText noTasks">No tasks to do on this day</span></li>';
+            removeAllBtn.attr('disabled', 'disabled').removeClass('active');
         }
 
         taskList.html(resultHtml);
@@ -124,28 +129,23 @@ $(function() {
 
         isComplete();
 
-        var delBtn = app.find(".deleteBtn");
-        delBtn.on('click', deleteTask);
-
-        var completeBtn = app.find(".completeBtn");
-        completeBtn.on('click', completeTask);
-
-        var editBtn = app.find(".editBtn");
-        editBtn.on('click', editTask);
+        app.find(".deleteBtn").on('click', deleteTask);
+        app.find(".completeBtn").on('click', completeTask);
+        app.find(".editBtn").on('click', editTask);
     }
 
     function completeTask() {
         var id = $(this).next().data('id');
-        var taskIndex = singleDayTask[dd].map(function(singleTask) {
+        var taskIndex = singleDayTask[selectedDay].map(function(singleTask) {
             return singleTask.id;
         }).indexOf(id);
 
-        if (singleDayTask[dd][taskIndex].complete === false) {
-            singleDayTask[dd][taskIndex].complete = true;
+        if (singleDayTask[selectedDay][taskIndex].complete === false) {
+            singleDayTask[selectedDay][taskIndex].complete = true;
             $(this).removeClass("icon-check-empty").addClass("icon-check").attr('title', 'Mark as uncompleted task');
             $(this).next().addClass("complete");
         } else {
-            singleDayTask[dd][taskIndex].complete = false;
+            singleDayTask[selectedDay][taskIndex].complete = false;
             $(this).removeClass("icon-check").addClass("icon-check-empty").attr('title', 'Mark as completed task');
             $(this).next().removeClass("complete");
         }
@@ -154,8 +154,8 @@ $(function() {
     }
 
     function isComplete() {
-        if (singleDayTask[dd] !== undefined && singleDayTask[dd].length > 0) {
-            var completeIndex = singleDayTask[dd].map(function(singleTask) {
+        if (singleDayTask[selectedDay] !== undefined && singleDayTask[selectedDay].length > 0) {
+            var completeIndex = singleDayTask[selectedDay].map(function(singleTask) {
                 return singleTask.complete;
             }).indexOf(true);
 
@@ -169,26 +169,26 @@ $(function() {
 
     function deleteTask() {
         var id = $(this).next().next().data('id');
-        var taskIndex = singleDayTask[dd].map(function(singleTask) {
+        var taskIndex = singleDayTask[selectedDay].map(function(singleTask) {
             return singleTask.id;
         }).indexOf(id);
 
-        singleDayTask[dd].splice(taskIndex, 1);
+        singleDayTask[selectedDay].splice(taskIndex, 1);
         saveTasks();
         renderTasks(singleDayTask);
     }
 
     function editTask() {
+        var id = $(this).prev().data('id');
+        var taskIndex = singleDayTask[selectedDay].map(function(singleTask) {
+            return singleTask.id;
+        }).indexOf(id);
+
         if ($(this).prev().attr('contenteditable') === 'false') {
             $(this).prev().attr('contenteditable', 'true').addClass("editable");
             $(this).next().removeAttr('disabled');
             $(this).removeClass("icon-edit-alt").addClass("icon-save").attr('title', 'Save task');
         } else {
-            var id = $(this).prev().data('id');
-            var taskIndex = singleDayTask[dd].map(function(singleTask) {
-                return singleTask.id;
-            }).indexOf(id);
-
             if ($.trim($(this).prev().text()).length <= 2) {
                 modalText.text('The text of the task is too short');
                 modal.css('display', 'block');
@@ -199,8 +199,8 @@ $(function() {
                 return;
             }
 
-            singleDayTask[dd][taskIndex].taskText = $(this).prev().text();
-            singleDayTask[dd][taskIndex].priority = $(this).next().val();
+            singleDayTask[selectedDay][taskIndex].taskText = $(this).prev().text();
+            singleDayTask[selectedDay][taskIndex].priority = $(this).next().val();
 
             saveTasks();
             renderTasks(singleDayTask);
@@ -211,17 +211,15 @@ $(function() {
         }
     }
 
-    removeCompleteBtn.on('click', deleteCompletedTask);
-
-    function deleteCompletedTask() {
-        var completeArray = singleDayTask[dd].map(function(singleTask) {
+    removeCompleteBtn.on('click', function() {
+        var completeArray = singleDayTask[selectedDay].map(function(singleTask) {
             return singleTask.complete;
         });
 
         for (var i = 0; i < completeArray.length; i++) {
             if (completeArray[i] === true) {
-                singleDayTask[dd].splice(i, 1);
-                completeArray = singleDayTask[dd].map(function(singleTask) {
+                singleDayTask[selectedDay].splice(i, 1);
+                completeArray = singleDayTask[selectedDay].map(function(singleTask) {
                     return singleTask.complete;
                 });
                 i -= 1;
@@ -230,9 +228,24 @@ $(function() {
         saveTasks();
         renderTasks(singleDayTask);
         $(this).attr('disabled', 'disabled');
-    }
+    });
+
+    removeAllBtn.on('click', function() {
+        modalText.html('<p>Are you sure you want to delete ALL tasks of the day?</p><button id="yesDelete" class="button modalBtn">YES</button><button id="noDelete" class="button modalBtn">NO</button>');
+        modal.css('display', 'block');
+        modal.find('#yesDelete').on('click', function() {
+            delete singleDayTask[selectedDay];
+            saveTasks();
+            renderTasks(singleDayTask);
+            modal.css('display', 'none');
+        });
+        modal.find('#noDelete').on('click', function() {
+            modal.css('display', 'none');
+        });
+    });
 
     loadTasks();
+
     closeModal.on('click', function() {
         modal.css('display', 'none');
     });

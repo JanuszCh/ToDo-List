@@ -19,7 +19,7 @@
         <div id="datepicker" class="datepicker"></div>
         <div class="container">
             <div class="newTask">
-                <button id="addTaskButn" class="button icon-list-add" title="Add task"></button>
+                <button id="addTaskBtn" class="addTaskBtn button icon-list-add" title="Add task"></button>
                 <textarea id="taskInput" class="inputTask" placeholder="Place your task here" required></textarea>
                 <select id="priority" class="priority" title="Select priority">
                     <option value="1">High</option>
@@ -29,6 +29,7 @@
             </div>
             <ul id="taskList" class="taskList"></ul>
             <button id="removeCompletedBtn" class="removeCompletedBtn button icon-trash" title="Remove completed tasks" disabled></button>
+            <button id="removeAllTasksBtn" class="removeAllTasksBtn button icon-trash" title="Remove ALL tasks" disabled></button>
         </div>
     </div>
 
@@ -39,7 +40,7 @@
                 <h2>ToDo List</h2>
             </div>
             <div class="modalBody">
-                <p id="modalText">Some text in the Modal Body</p>
+                <div id="modalText"></div>
             </div>
         </div>
     </div>

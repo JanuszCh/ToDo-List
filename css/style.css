@@ -2,6 +2,8 @@ body {
     background-color: #003459;
 }
 
+/*app*/
+
 .app {
     background-color: AliceBlue;
     width: 70%;
@@ -33,11 +35,6 @@ body {
     flex-wrap: nowrap;
     align-items: baseline;
     justify-content: space-between;
-}
-
-.icon-list-add:before {
-    font-size: 20px;
-    color: #00A9E9;
 }
 
 .inputTask {
@@ -82,8 +79,24 @@ body {
     height: 30px;
 }
 
+.addTaskBtn {
+    font-size: 22px;
+    color: #00A9E9;
+    width: 50px;
+}
+
 .removeCompletedBtn {
     margin-top: 10px;
+}
+
+.removeAllTasksBtn {
+    margin-top: 10px;
+    width: 50px;
+    float: right;
+}
+
+.active {
+    color: red;
 }
 
 .taskText {
@@ -117,6 +130,8 @@ body {
     font-size: 21px;
     margin: 0;
 }
+
+/*modal window*/
 
 .modal {
     display: none;
@@ -189,7 +204,6 @@ body {
 
 .closeModal:hover {
     color: #000;
-    text-decoration: none;
     cursor: pointer;
 }
 
@@ -198,12 +212,19 @@ body {
     font-family: 'Fredoka One', cursive;
     font-size: 22px;
     line-height: 55px;
-    padding: 2px 15px;
+    padding: 0 20px;
     background-color: #00A9E9;
     color: white;
 }
 
 .modalBody {
-    padding: 20px 15px;
+    padding: 20px;
     font-size: 18px;
+    text-align: center;
+}
+
+.modalBtn {
+    width: 50px;
+    margin: 10px 15px 0 15px;
+    font-weight: 800;
 }
