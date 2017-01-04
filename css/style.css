@@ -45,6 +45,7 @@ body {
     resize: vertical;
     font-size: 18px;
     background-color: AliceBlue;
+    box-shadow: none;
 }
 
 .inputTask:focus {
@@ -77,6 +78,7 @@ body {
 
 .button {
     height: 30px;
+    width: 40px;
 }
 
 .addTaskBtn {
@@ -120,10 +122,6 @@ body {
 
 .icon-trash:before, .icon-check-empty:before, .icon-check:before, .icon-edit-alt:before {
     font-size: 17px;
-}
-
-.editBtn {
-    width: 39px;
 }
 
 .icon-save:before {
