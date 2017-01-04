@@ -8,7 +8,9 @@ ToDo list is a simple web application to save Your daily tasks in order not to m
 * Mark task as completed / uncompleted
 * Set task priority
 * Edit task
-* Delete task
+* Delete single task
+* Delete completed tasks
+* Delete all tasks
 
 ### Technologies used:
 * HTML
