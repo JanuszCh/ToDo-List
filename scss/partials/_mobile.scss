@@ -1,0 +1,7 @@
+@media (max-width: $mobileWidth) {
+    .app {
+        max-width: $mobileWidth;
+        min-height: 100vh;
+        margin: 0;
+    }
+}

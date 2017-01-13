@@ -1,0 +1,128 @@
+body {
+    background-color:$darkBlue;
+}
+
+.app {
+    background-color: $backgroundColor;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.logo {
+    font-family: $fontLogo;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.datepicker {
+    margin: 0 auto;
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.newTask {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.inputTask {
+    width: 70%;
+    border: none;
+    border-bottom: 1px solid $darkBlue;
+    height: 27px;
+    resize: vertical;
+    font-size: 18px;
+    background-color: $backgroundColor;
+    box-shadow: none;
+}
+
+.inputTask:focus {
+    border-bottom: 2px solid $darkBlue;
+    outline: none;
+}
+
+.priority {
+    height: 30px;
+    cursor: pointer;
+}
+
+.priority [value='1'] {
+    color: red;
+}
+
+.priority [value='3'] {
+    color: blue;
+}
+
+.taskLine {
+    min-height: 50px;
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $lightBlue;
+    color: #00171F;
+}
+
+.button {
+    height: 30px;
+    width: 40px;
+}
+
+.addTaskBtn {
+    font-size: 22px;
+    color: $lightBlue;
+    width: 50px;
+}
+
+.removeCompletedBtn {
+    margin-top: 10px;
+}
+
+.removeAllTasksBtn {
+    margin-top: 10px;
+    width: 50px;
+    float: right;
+}
+
+.active {
+    color: red;
+}
+
+.taskText {
+    font-size: 20px;
+    font-weight: 800;
+    width: 50%;
+}
+
+.noTasks {
+    margin: 0 auto;
+}
+
+.complete {
+    text-decoration: line-through;
+    color: #00171F;
+}
+
+.editable {
+    background-color: $backgroundColor;
+}
+
+.icon-trash:before, .icon-check-empty:before, .icon-check:before, .icon-edit-alt:before {
+    font-size: 17px;
+}
+
+.icon-save:before {
+    font-size: 21px;
+    margin: 0;
+}
