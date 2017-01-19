@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     var app = $('#app'),
         taskInput = $('#taskInput'),
@@ -13,7 +13,7 @@ $(function() {
         callendar = $('#datepicker'),
         singleDayTask = {};
 
-    callendar.datepicker({firstDay: 1});
+    callendar.datepicker({ firstDay: 1 });
 
     var selectedDay = callendar.datepicker('getDate').toLocaleDateString().replace(/\./g, '-');
 
@@ -30,13 +30,17 @@ $(function() {
 
     function isInputValid(taskInput) {
         var trimInput = $.trim(taskInput).length;
-        return trimInput <= 2 || trimInput > 100;
+        return trimInput >= 2 && trimInput < 100;
+    }
+
+    function addEventsToErrorModal() {
+        $('#okBtn').on('click', hideModal);
     }
 
     function showErrorModal() {
-        modalText.html('<p>The text of the task should contain from 3 to 100 characters</p><button id="okBtn" class="button modalBtn">OK</button>');
-        modal.css('display', 'block');
-        $('#okBtn').on('click', hideModal);
+        var modalContent = '<p>The text of the task should contain from 3 to 100 characters</p><button id="okBtn" class="button modalBtn">OK</button>';
+        showModal(modalContent);
+        addEventsToErrorModal();
     }
 
     function saveTasks(task) {
@@ -72,6 +76,58 @@ $(function() {
         $(".editBtn").on('click', editTask);
     }
 
+   function markOptionAsSelected(value, option) {
+        $(option).find('option[value="' + value + '"]').attr('selected', 'selected');
+    }
+
+    function setPriority() {
+        var select = $('ul select');
+
+        $.each(select, function (i, option) {
+            var priorityValue = $(option).prev().prev().data('priority');
+            if (priorityValue === 1) {
+                markOptionAsSelected(1, option);
+            } else if (priorityValue === 2) {
+                markOptionAsSelected(2, option);
+            } else {
+                markOptionAsSelected(3, option);
+            }
+        });
+    }
+
+    function markTasksAsCompleted() {
+        var tasks = $('.task');
+        $.each(tasks, function (i, task) {
+            if ($(task).data('completed')) {
+                $(task).addClass('complete');
+                $(task).prev().addClass('icon-check').attr('title', 'Mark as uncompleted task');
+            }
+        });
+    }
+
+    function getCompletedIndex() {
+        return singleDayTask[selectedDay].map(function (singleTask) {
+            return singleTask.completed;
+        }).indexOf(true);
+    }
+
+    function activateRemoveCompletedBtn() {
+        if (isTaskPossibleToRender()) {
+            getCompletedIndex() >= 0 ? removeCompletedBtn.removeAttr('disabled') :
+                                       removeCompletedBtn.attr('disabled', 'disabled');
+        } else {
+            removeCompletedBtn.attr('disabled', 'disabled');
+        }
+    }
+
+    function createTaskLine(task) {
+        return '<li class="taskLine"><button type="button" class="deleteBtn button icon-trash" title="Delete task"></button><button type="button" class="completedBtn button icon-check-empty" title="Mark as completed task"></button><div  class="task taskText" data-completed="' + task.completed + '" data-id="' + task.id + '" data-priority="' + task.priority + '" contentEditable="' + false + '">' + task.taskText + '</div><button class="editBtn button icon-edit-alt" type="button" title="Edit task"></button><select class="priority" title="Select priority" disabled><option value="1">High</option><option value="2">Normal</option><option value="3">Low</option></select></li>';
+    }
+
+    function createInfoNoTasks() {
+        return '<li class="taskLine"><span class="task taskText noTasks">No tasks to do on this day</span></li>';
+    }
+
     function renderTasks(singleDayTask) {
         var resultHtml = '';
 
@@ -79,7 +135,7 @@ $(function() {
 
         if (isTaskPossibleToRender()) {
             singleDayTask[selectedDay].sort(comparePriority);
-            $.each(singleDayTask[selectedDay], function(i, task) {
+            $.each(singleDayTask[selectedDay], function (i, task) {
                 resultHtml += createTaskLine(task);
                 removeAllBtn.removeAttr('disabled').addClass('active');
             });
@@ -104,7 +160,7 @@ $(function() {
             priorityValue: priority.val()
         };
 
-        if (isInputValid(task.inputValue)) {
+        if (!isInputValid(task.inputValue)) {
             showErrorModal();
             return;
         }
@@ -116,53 +172,16 @@ $(function() {
     }
 
     function loadTasks() {
-        firebase.database().ref('singleDayTask').once('value', function(data) {
+        firebase.database().ref('singleDayTask').once('value', function (data) {
             singleDayTask = data.val();
             renderTasks(singleDayTask);
         });
     }
 
-    function markTasksAsCompleted() {
-        var tasks = $('.task');
-        $.each(tasks, function(i, task) {
-            if ($(task).data('completed')) {
-                $(task).addClass('complete');
-                $(task).prev().addClass('icon-check').attr('title', 'Mark as uncompleted task');
-            }
-        });
-    }
-
-    function setPriority() {
-        var select = $('ul select');
-
-        $.each(select, function(i, option) {
-            var priorityValue = $(option).prev().prev().data('priority');
-            if (priorityValue === 1) {
-                markOptionAsSelected(1, option);
-            } else if (priorityValue === 2) {
-                markOptionAsSelected(2, option);
-            } else {
-                markOptionAsSelected(3, option);
-            }
-        });
-    }
-
-    function markOptionAsSelected(value, option) {
-        $(option).find('option[value="' + value + '"]').attr('selected', 'selected');
-    }
-
-    function createTaskLine(task) {
-        return '<li class="taskLine"><button type="button" class="deleteBtn button icon-trash" title="Delete task"></button><button type="button" class="completedBtn button icon-check-empty" title="Mark as completed task"></button><div  class="task taskText" data-completed="' + task.completed + '" data-id="' + task.id + '" data-priority="' + task.priority + '" contentEditable="' + false + '">' + task.taskText + '</div><button class="editBtn button icon-edit-alt" type="button" title="Edit task"></button><select class="priority" title="Select priority" disabled><option value="1">High</option><option value="2">Normal</option><option value="3">Low</option></select></li>';
-    }
-
-    function createInfoNoTasks() {
-        return '<li class="taskLine"><span class="task taskText noTasks">No tasks to do on this day</span></li>';
-    }
-
     function getTaskIndex(task) {
         var id = task.parent().find('.task').data('id');
 
-        return singleDayTask[selectedDay].map(function(singleTask) {
+        return singleDayTask[selectedDay].map(function (singleTask) {
             return singleTask.id;
         }).indexOf(id);
     }
@@ -190,21 +209,6 @@ $(function() {
         activateRemoveCompletedBtn();
     }
 
-    function getCompletedIndex() {
-        return singleDayTask[selectedDay].map(function(singleTask) {
-            return singleTask.completed;
-        }).indexOf(true);
-    }
-
-    function activateRemoveCompletedBtn() {
-        if (isTaskPossibleToRender()) {
-            getCompletedIndex() >= 0 ? removeCompletedBtn.removeAttr('disabled') :
-                                       removeCompletedBtn.attr('disabled', 'disabled');
-        } else {
-            removeCompletedBtn.attr('disabled', 'disabled');
-        }
-    }
-
     function deleteTask() {
         singleDayTask[selectedDay].splice(getTaskIndex($(this)), 1);
         addTaskToDatabase();
@@ -227,7 +231,7 @@ $(function() {
         var taskToEdit = singleDayTask[selectedDay][getTaskIndex(button)];
         var taskEditedText = button.prev().text();
 
-        if (isInputValid(taskEditedText)) {
+        if (!isInputValid(taskEditedText)) {
             showErrorModal();
             return;
         }
@@ -252,15 +256,15 @@ $(function() {
         }
     }
 
-    function removeCompletedTasks(){
-        var completeArray = singleDayTask[selectedDay].map(function(singleTask) {
+    function removeCompletedTasks() {
+        var completeArray = singleDayTask[selectedDay].map(function (singleTask) {
             return singleTask.completed;
         });
 
         for (var i = 0; i < completeArray.length; i++) {
             if (completeArray[i]) {
                 singleDayTask[selectedDay].splice(i, 1);
-                completeArray = singleDayTask[selectedDay].map(function(singleTask) {
+                completeArray = singleDayTask[selectedDay].map(function (singleTask) {
                     return singleTask.completed;
                 });
                 i -= 1;
@@ -271,10 +275,15 @@ $(function() {
         $(this).attr('disabled', 'disabled');
     }
 
-    function showAskModal() {
-        modalText.html('<p>Are you sure you want to delete ALL tasks of the day?</p><button id="yesDeleteBtn" class="button modalBtn">YES</button><button id="noDeleteBtn" class="button modalBtn">NO</button>');
-        modal.css('display', 'block');
+    function addEventsToAskModal() {
+        $('#yesDeleteBtn').on('click', removeAllTasks);
+        $('#noDeleteBtn').on('click', hideModal);
+    }
 
+    function showAskModal() {
+        var modalContent = '<p>Are you sure you want to delete ALL tasks of the day?</p><button id="yesDeleteBtn" class="button modalBtn">YES</button><button id="noDeleteBtn" class="button modalBtn">NO</button>';
+
+        showModal(modalContent);
         addEventsToAskModal();
     }
 
@@ -282,16 +291,16 @@ $(function() {
         modal.css('display', 'none');
     }
 
-    function removeAllTasks() {
-            delete singleDayTask[selectedDay];
-            addTaskToDatabase();
-            renderTasks(singleDayTask);
-            hideModal();
+    function showModal(modalContent) {
+        modalText.html(modalContent);
+        modal.css('display', 'block');
     }
 
-    function addEventsToAskModal() {
-        $('#yesDeleteBtn').on('click', removeAllTasks);
-        $('#noDeleteBtn').on('click', hideModal);
+    function removeAllTasks() {
+        delete singleDayTask[selectedDay];
+        addTaskToDatabase();
+        renderTasks(singleDayTask);
+        hideModal();
     }
 
     loadTasks();
