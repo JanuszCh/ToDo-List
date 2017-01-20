@@ -1,5 +1,5 @@
 body {
-    background-color:$darkBlue;
+    background-color: $darkBlue;
 }
 
 .app {
@@ -7,64 +7,70 @@ body {
     max-width: 600px;
     margin: 30px auto;
     padding: 20px;
+    &__logo {
+        font-family: $fontLogo;
+        text-align: center;
+        font-size: 35px;
+        margin-bottom: 20px;
+        cursor: default;
+    }
+    &__datepicker {
+        margin: 0 auto;
+        width: 300px;
+        margin-bottom: 20px;
+    }
+    &__container {
+        width: 90%;
+        margin: 0 auto;
+    }
+    .button--removeCompleted {
+        margin-top: 10px;
+    }
+    .button--removeAllTasks {
+        margin-top: 10px;
+        width: 50px;
+        float: right;
+    }
 }
 
-.logo {
-    font-family: $fontLogo;
-    text-align: center;
-    font-size: 35px;
-    margin-bottom: 20px;
-    cursor: default;
-}
-
-.datepicker {
-    margin: 0 auto;
-    width: 300px;
-    margin-bottom: 20px;
-}
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-}
-
-.newTask {
+.app__newTask {
     display: flex;
     flex-wrap: nowrap;
     align-items: baseline;
     justify-content: space-between;
+    .button--addTask {
+        font-size: 22px;
+        color: $lightBlue;
+        width: 50px;
+    }
+    .newTask__inputTask {
+        width: 70%;
+        border: none;
+        border-bottom: 1px solid $darkBlue;
+        height: 27px;
+        resize: vertical;
+        font-size: 18px;
+        background-color: $backgroundColor;
+        box-shadow: none;
+        &:focus {
+            border-bottom: 2px solid $darkBlue;
+            outline: none;
+        }
+    }
 }
 
-.inputTask {
-    width: 70%;
-    border: none;
-    border-bottom: 1px solid $darkBlue;
-    height: 27px;
-    resize: vertical;
-    font-size: 18px;
-    background-color: $backgroundColor;
-    box-shadow: none;
-}
-
-.inputTask:focus {
-    border-bottom: 2px solid $darkBlue;
-    outline: none;
-}
-
-.priority {
+.newTask__priority {
     height: 30px;
     cursor: pointer;
+    & [value='1'] {
+        color: red;
+    }
+    & [value='3'] {
+        color: blue;
+    }
 }
 
-.priority [value='1'] {
-    color: red;
-}
-
-.priority [value='3'] {
-    color: blue;
-}
-
-.taskLine {
+.newTask__line {
     min-height: 50px;
     margin-top: 10px;
     padding: 5px;
@@ -73,53 +79,35 @@ body {
     align-items: center;
     background-color: $lightBlue;
     color: #00171F;
+    .newTask__text {
+        font-size: 20px;
+        font-weight: 800;
+        width: 50%;
+        &--editable {
+            background-color: $backgroundColor;
+        }
+        &--completed {
+            text-decoration: line-through;
+            color: #00171F;
+        }
+        &--noTasks {
+            margin: 0 auto;
+        }
+    }
 }
 
 .button {
     height: 30px;
     width: 40px;
+    &--active {
+        color: red;
+    }
 }
 
-.addTaskBtn {
-    font-size: 22px;
-    color: $lightBlue;
-    width: 50px;
-}
-
-.removeCompletedBtn {
-    margin-top: 10px;
-}
-
-.removeAllTasksBtn {
-    margin-top: 10px;
-    width: 50px;
-    float: right;
-}
-
-.active {
-    color: red;
-}
-
-.taskText {
-    font-size: 20px;
-    font-weight: 800;
-    width: 50%;
-}
-
-.noTasks {
-    margin: 0 auto;
-}
-
-.complete {
-    text-decoration: line-through;
-    color: #00171F;
-}
-
-.editable {
-    background-color: $backgroundColor;
-}
-
-.icon-trash:before, .icon-check-empty:before, .icon-check:before, .icon-edit-alt:before {
+.icon-trash:before,
+.icon-check-empty:before,
+.icon-check:before,
+.icon-edit-alt:before {
     font-size: 17px;
 }
 

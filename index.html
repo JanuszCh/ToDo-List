@@ -9,38 +9,38 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.nested.css">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 </head>
 
 <body>
     <div id="app" class="app">
-        <h1 class="logo">ToDo List</h1>
-        <div id="datepicker" class="datepicker"></div>
-        <div class="container">
-            <div class="newTask">
-                <button id="addTaskBtn" class="addTaskBtn button icon-list-add" title="Add task"></button>
-                <textarea id="taskInput" class="inputTask" placeholder="Place your task here" required></textarea>
-                <select id="priority" class="priority" title="Select priority">
+        <h1 class="app__logo">ToDo List</h1>
+        <div id="datepicker" class="app__datepicker"></div>
+        <div class="app__container">
+            <div class="app__newTask">
+                <button id="add-task-btn" class="button button--addTask icon-list-add" title="Add task"></button>
+                <textarea id="task-input" class="newTask__inputTask" placeholder="Place your task here" required></textarea>
+                <select id="priority" class="newTask__priority" title="Select priority">
                     <option value="1">High</option>
                     <option value="2" selected>Normal</option>
                     <option value="3">Low</option>
                 </select>
             </div>
-            <ul id="taskList" class="taskList"></ul>
-            <button id="removeCompletedBtn" class="removeCompletedBtn button icon-trash" title="Remove completed tasks" disabled></button>
-            <button id="removeAllTasksBtn" class="removeAllTasksBtn button icon-trash" title="Remove ALL tasks" disabled></button>
+            <ul id="task-list"></ul>
+            <button id="remove-completed-btn" class="button button--removeCompleted icon-trash" title="Remove completed tasks" disabled></button>
+            <button id="remove-all-tasks-btn" class="button button--removeAllTasks icon-trash" title="Remove ALL tasks" disabled></button>
         </div>
     </div>
 
     <div id="modal" class="modal">
-        <div class="modalContent">
-            <div class="modalHeader">
-                <span id="closeModal" class="closeModal">&times;</span>
+        <div class="modal__content">
+            <div class="modal__header">
+                <span id="close-modal" class="modal__close">&times;</span>
                 <h2>ToDo List</h2>
             </div>
-            <div class="modalBody">
-                <div id="modalText"></div>
+            <div class="modal__body">
+                <div id="modal-text"></div>
             </div>
         </div>
     </div>

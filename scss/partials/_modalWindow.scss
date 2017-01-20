@@ -10,21 +10,44 @@
     overflow: auto;
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modalContent {
-    position: relative;
-    background-color: $backgroundColor;
-    margin: auto;
-    padding: 0;
-    width: 80%;
-    max-width: 700px;
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.3s;
-    -moz-animation-name: animatetop;
-    -moz-animation-duration: 0.3s;
-    animation-name: animatetop;
-    animation-duration: 0.3s
+    &__content {
+        position: relative;
+        background-color: $backgroundColor;
+        margin: auto;
+        padding: 0;
+        width: 80%;
+        max-width: 700px;
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.3s;
+        -moz-animation-name: animatetop;
+        -moz-animation-duration: 0.3s;
+        animation-name: animatetop;
+        animation-duration: 0.3s;
+        .modal__header {
+            height: 55px;
+            font-family: $fontLogo;
+            font-size: 22px;
+            line-height: 55px;
+            padding: 0 20px;
+            background-color: $lightBlue;
+            color: white;
+        }
+        .modal__close {
+            color: white;
+            float: right;
+            font-size: 25px;
+            font-weight: bold;
+            &:hover {
+                color: #000;
+                cursor: pointer;
+            }
+        }
+        .modal__body {
+            padding: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    }
 }
 
 @-moz-keyframes animatetop {
@@ -60,35 +83,7 @@
     }
 }
 
-.closeModal {
-    color: white;
-    float: right;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.closeModal:hover {
-    color: #000;
-    cursor: pointer;
-}
-
-.modalHeader {
-    height: 55px;
-    font-family: $fontLogo;
-    font-size: 22px;
-    line-height: 55px;
-    padding: 0 20px;
-    background-color: $lightBlue;
-    color: white;
-}
-
-.modalBody {
-    padding: 20px;
-    font-size: 18px;
-    text-align: center;
-}
-
-.modalBtn {
+.button--modal {
     width: 50px;
     margin: 10px 15px 0 15px;
     font-weight: 800;
